@@ -2341,8 +2341,8 @@ def draw_gun_info(player):
 
 # --- 게임 루프 ---
 def main():
-    # --- 디버깅용: 모든 스테이지 해금 ---
-    DEBUG_UNLOCK_ALL_STAGE = True  # False로 바꾸면 원래대로
+    # --- For debuging purpose, change this to 'True' to unlock all stages ---
+    DEBUG_UNLOCK_ALL_STAGE = False # 'False' for normal game purpose
 
     if DEBUG_UNLOCK_ALL_STAGE:
         stage_unlocked = [True] * 50  # 50스테이지까지 해금
