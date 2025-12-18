@@ -8,4 +8,4 @@ select option: enter
 move: w, a, s, d
 shoot: mouse click
 swap weapon: 1~4
-
+reload: r
