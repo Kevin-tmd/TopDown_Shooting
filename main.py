@@ -5,7 +5,7 @@ import sys
 import heapq
 
 pygame.init()
-WIDTH, HEIGHT = 960, 720  # 기존 1080, 800 → 약간 더 작게
+WIDTH, HEIGHT = 1080, 800  # 기존 1080, 800 → 약간 더 작게
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 FONT = pygame.font.SysFont("AppleGothic", 24)
@@ -36,27 +36,51 @@ class Player(pygame.sprite.Sprite):
         self.max_hp = 100
         # 무기별 탄약 및 탄창
         self.gun_type = 1
-        self.ammo1 = 30  
-        self.ammo2 = 5
-        self.ammo3 = 6
-        self.ammo4 = 30
-        self.ammo5 = 125
-        self.ammo6 = 6
-        self.ammo7 = 20
+        self.ammo1 = 30 # MP5  
+        self.ammo2 = 25 # UMP45
+        self.ammo3 = 50 # P90
+        self.ammo4 = 5 # AWP
+        self.ammo5 = 10 # Scout (SSG-08)
+        self.ammo6 = 30 # AK-74
+        self.ammo7 = 30 # G36
+        self.ammo8 = 25 # FAMAS
+        self.ammo9 = 20 # Mk14EBR
+        self.ammo10 = 15 #QBU-88
+        self.ammo11 = 100 # M249
+        self.ammo12 = 100 # MG42
+        self.ammo13 = 6 # Remington 870
+        self.ammo14 = 8 # Saiga-12
+        self.ammo15 = 6 # Webley MK VI
         self.max_ammo1 = 30
-        self.max_ammo2 = 5
-        self.max_ammo3 = 6
-        self.max_ammo4 = 30
-        self.max_ammo5 = 125
-        self.max_ammo6 = 6
-        self.max_ammo7 = 20
-        self.mag1 = 4  # SMG 탄창 2개
-        self.mag2 = 1  # SR 탄창 1개
-        self.mag3 = 2  # Shotgun 탄창 2개
-        self.mag4 = 3  # AR 탄창 3개
-        self.mag5 = 1  # LMG 탄창 2개
-        self.mag6 = float('inf')  # 무한 탄창(권총)
-        self.mag7 = 2  # DMR 탄창 3개
+        self.max_ammo2 = 25
+        self.max_ammo3 = 50
+        self.max_ammo4 = 5
+        self.max_ammo5 = 10
+        self.max_ammo6 = 30
+        self.max_ammo7 = 30
+        self.max_ammo8 = 25
+        self.max_ammo9 = 20
+        self.max_ammo10 = 15
+        self.max_ammo11 = 100
+        self.max_ammo12 = 100
+        self.max_ammo13 = 6
+        self.max_ammo14 = 8
+        self.max_ammo15 = 6
+        self.mag1 = 3
+        self.mag2 = 3
+        self.mag3 = 2 
+        self.mag4 = 2 
+        self.mag5 = 2 
+        self.mag6 = 3
+        self.mag7 = 3 
+        self.mag8 = 3
+        self.mag9 = 2
+        self.mag10 = 3
+        self.mag11 = 1
+        self.mag12 = 1
+        self.mag13 = 2
+        self.mag14 = 2
+        self.mag15 = float('inf')  # infinite
         # 4번총은 탄창 제한 없음
         self.reload_time = 120  # SMG, 2초
         self.reload_cnt = 0
@@ -68,19 +92,35 @@ class Player(pygame.sprite.Sprite):
 
     def update(self, walls):
         if self.gun_type == 1:
-            self.speed = 4
+            self.speed = 3.95
         elif self.gun_type == 2:
-            self.speed = 1.75
+            self.speed = 3.94
         elif self.gun_type == 3:
-            self.speed = 2.25
+            self.speed = 3.93
         elif self.gun_type == 4:
             self.speed = 3.5
         elif self.gun_type == 5:
-            self.speed = 1.5  
+            self.speed = 3.75  
         elif self.gun_type == 6:
-            self.speed = 4.5
+            self.speed = 3.88
         elif self.gun_type == 7:
-            self.speed = 4
+            self.speed = 3.91
+        elif self.gun_type == 8:
+            self.speed = 3.89
+        elif self.gun_type == 9:
+            self.speed = 3.88
+        elif self.gun_type == 10:
+            self.speed = 3.86
+        elif self.gun_type == 11:
+            self.speed = 3.7
+        elif self.gun_type == 12:
+            self.speed = 3.67
+        elif self.gun_type == 13:
+            self.speed = 3.9
+        elif self.gun_type == 14:
+            self.speed = 3.88
+        elif self.gun_type == 15:
+            self.speed = 4.0
 
         keys = pygame.key.get_pressed()
         move = pygame.Vector2(0,0)
@@ -131,19 +171,35 @@ class Player(pygame.sprite.Sprite):
         # 리로드 (무기별로 탄약/최대탄약/탄창 체크)
         if keys[pygame.K_r] and self.reload_cnt == 0 :
             if self.gun_type == 1 and self.ammo1 < self.max_ammo1 and self.mag1 > 0:
-                self.reload_cnt = 60*1.8  # MP5 1.8초
+                self.reload_cnt = 60*1.8  
             elif self.gun_type == 2 and self.ammo2 < self.max_ammo2 and self.mag2 > 0:
-                self.reload_cnt = 60*2.4  # M24 2.4초
+                self.reload_cnt = 60*1.9  
             elif self.gun_type == 3 and self.ammo3 < self.max_ammo3 and self.mag3 > 0:
-                self.reload_cnt = 60*2.5  # Remington 870 2.5초
+                self.reload_cnt = 60*2.1  
             elif self.gun_type == 4 and self.ammo4 < self.max_ammo4 and self.mag4 > 0:
-                self.reload_cnt = 60*2.0  # M4A1 2.0초
+                self.reload_cnt = 60*3.2 
             elif self.gun_type == 5 and self.ammo5 < self.max_ammo5 and self.mag5 > 0:
-                self.reload_cnt = 60*6.0  # MG42 6초
+                self.reload_cnt = 60*3.0  
             elif self.gun_type == 6 and self.ammo6 < self.max_ammo6:
-                self.reload_cnt = 60*2.3   # Webley MK VI 2.3초
+                self.reload_cnt = 60*2.4   
             elif self.gun_type == 7 and self.ammo7 < self.max_ammo7 and self.mag7 > 0:
-                self.reload_cnt = 60*2.7  # QBU-88 2.7초
+                self.reload_cnt = 60*2.1
+            elif self.gun_type == 8 and self.ammo8 < self.max_ammo8 and self.mag8 > 0:
+                self.reload_cnt = 60*2.3
+            elif self.gun_type == 9 and self.ammo9 < self.max_ammo9 and self.mag9 > 0:
+                self.reload_cnt = 60*2.8
+            elif self.gun_type == 10 and self.ammo10 < self.max_ammo10 and self.mag10 > 0:
+                self.reload_cnt = 60*2.9
+            elif self.gun_type == 11 and self.ammo11 < self.max_ammo11 and self.mag11 > 0:
+                self.reload_cnt = 60*5.5
+            elif self.gun_type == 12 and self.ammo12 < self.max_ammo12 and self.mag12 > 0:
+                self.reload_cnt = 60*5.8
+            elif self.gun_type == 13 and self.ammo13 < self.max_ammo13 and self.mag13 > 0:
+                self.reload_cnt = 60*3.2
+            elif self.gun_type == 14 and self.ammo14 < self.max_ammo14 and self.mag14 > 0:
+                self.reload_cnt = 60*3.0
+            elif self.gun_type == 15 and self.ammo15 < self.max_ammo15:
+                self.reload_cnt = 60*2.0 
         if self.reload_cnt > 0:
             self.reload_cnt -= 1
             if self.reload_cnt <= 0:
@@ -162,90 +218,209 @@ class Player(pygame.sprite.Sprite):
                 elif self.gun_type == 5 and self.mag5 > 0:
                     self.ammo5 = self.max_ammo5
                     self.mag5 -= 1
-                elif self.gun_type == 6:
+                elif self.gun_type == 6 and self.mag6 > 0:
                     self.ammo6 = self.max_ammo6
+                    self.mag6 -= 1
                 elif self.gun_type == 7 and self.mag7 > 0:
                     self.ammo7 = self.max_ammo7
                     self.mag7 -= 1
+                elif self.gun_type == 8 and self.mag8 > 0:
+                    self.ammo8 = self.max_ammo8
+                    self.mag8 -= 1
+                elif self.gun_type == 9 and self.mag9 > 0:
+                    self.ammo9 = self.max_ammo9
+                    self.mag9 -= 1
+                elif self.gun_type == 10 and self.mag10 > 0:
+                    self.ammo10 = self.max_ammo10
+                    self.mag10 -= 1
+                elif self.gun_type == 11 and self.mag11 > 0:
+                    self.ammo11 = self.max_ammo11
+                    self.mag11 -= 1
+                elif self.gun_type == 12 and self.mag12 > 0:
+                    self.ammo12 = self.max_ammo12
+                    self.mag12 -= 1
+                elif self.gun_type == 13 and self.mag13 > 0:
+                    self.ammo13 = self.max_ammo13
+                    self.mag13 -= 1
+                elif self.gun_type == 14 and self.mag14 > 0:
+                    self.ammo14 = self.max_ammo14
+                    self.mag14 -= 1
+                elif self.gun_type == 15:
+                    self.ammo15 = self.max_ammo15
 
         # 연사 쿨타임 감소
         if self.shoot_cool > 0:
             self.shoot_cool -= 1
 
     def try_auto_shoot(self, mouse_pos, bullets, walls):
-        if self.gun_type == 1:  # SMG
+        if self.gun_type == 1:  
             if self.ammo1 > 0 and self.shoot_cool == 0:
                 dir = pygame.Vector2(mouse_pos) - self.pos
                 if dir.length(): dir = dir.normalize()
                 angle = math.atan2(dir.y, dir.x)
-                spread = math.radians(2)
+                spread = math.radians(1.2)
                 angle += random.uniform(-spread, spread)
                 dir = pygame.Vector2(math.cos(angle), math.sin(angle))
                 smg_range = int((WIDTH**2 + HEIGHT**2)**0.5 * 2/3)
-                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 26, 12, 400))
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 22, 85, 450))
                 self.ammo1 -= 1
-                self.shoot_cool = 6  # 초당 10.0발
-        elif self.gun_type == 2:  # SR (조준선, 관통X, 빨간 투명선)
+                self.shoot_cool = 5
+        elif self.gun_type == 2:  
             if self.ammo2 > 0 and self.shoot_cool == 0:
                 dir = pygame.Vector2(mouse_pos) - self.pos
                 if dir.length(): dir = dir.normalize()
-                # SR 사거리: 1200
-                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 200, 30, 1200))
+                angle = math.atan2(dir.y, dir.x)
+                spread = math.radians(1.1)
+                angle += random.uniform(-spread, spread)
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 26, 78, 450))
                 self.ammo2 -= 1
-                self.shoot_cool = 86   # 초당 0.7발
-        elif self.gun_type == 3:  # Shotgun
+                self.shoot_cool = 6  
+        elif self.gun_type == 3:  
             if self.ammo3 > 0 and self.shoot_cool == 0:
-                base_dir = pygame.Vector2(mouse_pos) - self.pos
-                if base_dir.length(): base_dir = base_dir.normalize()
-                angle0 = math.atan2(base_dir.y, base_dir.x)
-                spread = math.radians(40)
-                for i in range(6):
-                    angle = angle0 - spread/2 + spread*i/7 + random.uniform(-math.radians(3), math.radians(3))
-                    dir = pygame.Vector2(math.cos(angle), math.sin(angle))
-                    bullets.add(PlayerBullet(self.pos, dir, walls, "player", 74, 8, 180))
-                self.ammo3 -= 1
-                self.shoot_cool = 50  # 초당 1.2발(60/0.6=100)
-        elif self.gun_type == 4:  # AR
+                dir = pygame.Vector2(mouse_pos) - self.pos
+                if dir.length(): dir = dir.normalize()
+                angle = math.atan2(dir.y, dir.x)
+                spread = math.radians(1.4)
+                angle += random.uniform(-spread, spread)
+                dir = pygame.Vector2(math.cos(angle), math.sin(angle))
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 20, 90, 450))
+                self.shoot_cool = 4
+        elif self.gun_type == 4: 
             if self.ammo4 > 0 and self.shoot_cool == 0:
                 dir = pygame.Vector2(mouse_pos) - self.pos
                 if dir.length(): dir = dir.normalize()
                 angle = math.atan2(dir.y, dir.x)
-                spread = math.radians(0.3)
+                spread = math.radians(0.075)
                 angle += random.uniform(-spread, spread)
                 dir = pygame.Vector2(math.cos(angle), math.sin(angle))
-                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 34, 16, 600))
+                dir = pygame.Vector2(math.cos(angle), math.sin(angle))
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 250, 140, 1200))
                 self.ammo4 -= 1
-                self.shoot_cool = 7  # 초당 8.0발
-        elif self.gun_type == 5:  # LMG
+                self.shoot_cool = 90
+        elif self.gun_type == 5:  
             if self.ammo5 > 0 and self.shoot_cool == 0:
                 dir = pygame.Vector2(mouse_pos) - self.pos
                 if dir.length(): dir = dir.normalize()
                 angle = math.atan2(dir.y, dir.x)
-                spread = math.radians(4)
+                spread = math.radians(0.05)
                 angle += random.uniform(-spread, spread)
                 dir = pygame.Vector2(math.cos(angle), math.sin(angle))
                 lmg_range = int((WIDTH**2 + HEIGHT**2)**0.5 * 2/3)
-                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 14, 12, 650))
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 205, 105, 1050))
                 self.ammo5 -= 1
-                self.shoot_cool = 5  # 초당 12발(60/5=12)
-        elif self.gun_type == 6:  # Webley MK VI (조준선X, 관통X, 빨간 투명선X, 근거리)
+                self.shoot_cool = 51
+        elif self.gun_type == 6:  # AK-47 (조준선X, 관통X, 빨간 투명선X, 근거리)
             if self.ammo6 > 0 and self.shoot_cool == 0:
                 dir = pygame.Vector2(mouse_pos) - self.pos
                 if dir.length(): dir = dir.normalize()
-                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 58, 15, 380))
+                angle = math.atan2(dir.y, dir.x)
+                spread = math.radians(0.9)
+                angle += random.uniform(-spread, spread)
+                dir = pygame.Vector2(math.cos(angle), math.sin(angle))
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 36, 95, 650))
                 self.ammo6 -= 1
-                self.shoot_cool = 46 # 초당 1.3발
-        elif self.gun_type == 7:  # DMR (조준선, 관통X, 빨간 투명선, 중거리)
+                self.shoot_cool = 6
+        elif self.gun_type == 7:  # G36 (조준선, 관통X, 빨간 투명선, 중거리)
             if self.ammo7 > 0 and self.shoot_cool == 0:
+                dir = pygame.Vector2(mouse_pos) - self.pos
+                if dir.length(): dir = dir.normalize()
+                angle = math.atan2(dir.y, dir.x)
+                spread = math.radians(1.1)
+                angle += random.uniform(-spread, spread)
+                dir = pygame.Vector2(math.cos(angle), math.sin(angle))
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 30, 100, 650))  
+                self.ammo7 -= 1
+                self.shoot_cool = 5
+        elif self.gun_type == 8:  # FAMAS (조준선, 관통X, 빨간 투명선, 중거리)
+            if self.ammo8 > 0 and self.shoot_cool == 0:
+                dir = pygame.Vector2(mouse_pos) - self.pos
+                if dir.length(): dir = dir.normalize()
+                angle = math.atan2(dir.y, dir.x)
+                spread = math.radians(1.0)
+                angle += random.uniform(-spread, spread)
+                dir = pygame.Vector2(math.cos(angle), math.sin(angle))
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 28, 102, 650)) 
+                self.ammo8 -= 1
+                self.shoot_cool = 4
+        elif self.gun_type == 9:  # Mk14 EBR (조준선, 관통O, 빨간 투명선, 장거리)
+            if self.ammo9 > 0 and self.shoot_cool == 0:
+                dir = pygame.Vector2(mouse_pos) - self.pos
+                if dir.length(): dir = dir.normalize()
+                angle = math.atan2(dir.y, dir.x)
+                spread = math.radians(0.2)
+                angle += random.uniform(-spread, spread)
+                dir = pygame.Vector2(math.cos(angle), math.sin(angle))
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 70, 125, 1000))  
+                self.ammo9 -= 1
+                self.shoot_cool = 10
+        elif self.gun_type == 10:  # QBU-88 (조준선, 관통O, 빨간 투명선, 장거리)
+            if self.ammo10 > 0 and self.shoot_cool == 0:
+                dir = pygame.Vector2(mouse_pos) - self.pos
+                if dir.length(): dir = dir.normalize()
+                angle = math.atan2(dir.y, dir.x)
+                spread = math.radians(0.2)
+                angle += random.uniform(-spread, spread)
+                dir = pygame.Vector2(math.cos(angle), math.sin(angle))
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 60, 90, 950))  
+                self.ammo10 -= 1
+                self.shoot_cool = 11
+        elif self.gun_type == 11:  # M249 (조준선, 관통X, 빨간 투명선, 중거리)
+            if self.ammo11 > 0 and self.shoot_cool == 0:
+                dir = pygame.Vector2(mouse_pos) - self.pos
+                if dir.length(): dir = dir.normalize()
+                angle = math.atan2(dir.y, dir.x)
+                spread = math.radians(2.5)
+                angle += random.uniform(-spread, spread)
+                dir = pygame.Vector2(math.cos(angle), math.sin(angle))
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 30, 90, 700))
+                self.ammo11 -= 1
+                self.shoot_cool = 5
+        elif self.gun_type == 12:  # MG42 (조준선, 관통X, 빨간 투명선, 중거리)
+            if self.ammo12 > 0 and self.shoot_cool == 0:
+                dir = pygame.Vector2(mouse_pos) - self.pos
+                if dir.length(): dir = dir.normalize()
+                angle = math.atan2(dir.y, dir.x)
+                spread = math.radians(2.5)
+                angle += random.uniform(-spread, spread)
+                dir = pygame.Vector2(math.cos(angle), math.sin(angle))
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 28, 92, 700))  # 사거리 2.2배로
+                self.ammo12 -= 1
+                self.shoot_cool = 3
+        elif self.gun_type == 13:  # Remington 870 (조준선X, 관통X, 빨간 투명선X, 근거리)
+            if self.ammo13 > 0 and self.shoot_cool == 0:
+                base_dir = pygame.Vector2(mouse_pos) - self.pos
+                if base_dir.length(): base_dir = base_dir.normalize()
+                angle0 = math.atan2(base_dir.y, base_dir.x)
+                spread = math.radians(15)
+                for i in range(10):
+                    angle = angle0 - spread/2 + spread*i/6 + random.uniform(-math.radians(5), math.radians(5))
+                    dir = pygame.Vector2(math.cos(angle), math.sin(angle))
+                    bullets.add(PlayerBullet(self.pos, dir, walls, "player", 45, 50, 180))
+                self.ammo13 -= 1
+                self.shoot_cool = 51
+        elif self.gun_type == 14:  # Saiga-12 (조준선X, 관통X, 빨간 투명선X, 근거리)
+            if self.ammo14 > 0 and self.shoot_cool == 0:
+                base_dir = pygame.Vector2(mouse_pos) - self.pos
+                if base_dir.length(): base_dir = base_dir.normalize()
+                angle0 = math.atan2(base_dir.y, base_dir.x)
+                spread = math.radians(30)
+                for i in range(6):
+                    angle = angle0 - spread/2 + spread*i/8 + random.uniform(-math.radians(4), math.radians(4))
+                    dir = pygame.Vector2(math.cos(angle), math.sin(angle))
+                    bullets.add(PlayerBullet(self.pos, dir, walls, "player", 40, 50, 180))
+                self.ammo14 -= 1
+                self.shoot_cool = 20
+        elif self.gun_type == 15:  # Webley MK VI (조준선, 관통X, 빨간 투명선, 중거리)
+            if self.ammo15 > 0 and self.shoot_cool == 0:
                 dir = pygame.Vector2(mouse_pos) - self.pos
                 if dir.length(): dir = dir.normalize()
                 angle = math.atan2(dir.y, dir.x)
                 spread = math.radians(0.1)
                 angle += random.uniform(-spread, spread)
                 dir = pygame.Vector2(math.cos(angle), math.sin(angle))
-                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 62, 22, 900))  # 사거리 2.5배로
-                self.ammo7 -= 1
-                self.shoot_cool = 12 # 초당 5발
+                bullets.add(PlayerBullet(self.pos, dir, walls, "player", 58, 40, 350))
+                self.ammo15 -= 1
+                self.shoot_cool = 12
 
 class PlayerBullet(pygame.sprite.Sprite):
     def __init__(self, pos, dir, walls, owner, damage, speed, max_dist):
@@ -255,7 +430,7 @@ class PlayerBullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.pos = pygame.Vector2(pos)
         self.dir = dir
-        self.speed = speed
+        self.speed = speed/3
         self.owner = owner
         self.walls = walls
         self.damage = damage
@@ -287,13 +462,13 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.pos = pygame.Vector2(pos)
         self.dir = dir
-        self.speed = 8 if owner == "player" else 8
+        self.speed = 8 if owner == "player" else 10
         self.owner = owner
         self.walls = walls
         # 빨간/보라 적 총알 사거리: 화면 길이의 0.6
         self.max_dist = 370 if owner == "enemy" else 9999
         self.travel = 0
-        self.damage = 20 if owner == "enemy" else 0  # 대미지 속성 추가
+        self.damage = 15 if owner == "enemy" else 0  # 대미지 속성 추가
 
     def update(self):
         move = self.dir * self.speed
@@ -310,15 +485,15 @@ class Bullet(pygame.sprite.Sprite):
 class PinkBullet(pygame.sprite.Sprite):
     def __init__(self, pos, dir, walls, owner):
         super().__init__()
-        self.image = pygame.Surface((8,8), pygame.SRCALPHA)
-        pygame.draw.circle(self.image, (255, 120, 200), (4,4), 4)
+        self.image = pygame.Surface((10,10), pygame.SRCALPHA)
+        pygame.draw.circle(self.image, (255, 120, 200), (4,4), 10)
         self.rect = self.image.get_rect(center=pos)
         self.pos = pygame.Vector2(pos)
         self.dir = dir
-        self.speed = 6
+        self.speed = 8
         self.owner = owner
         self.walls = walls
-        self.damage = 45  # 대미지 속성 추가
+        self.damage = 34  # 대미지 속성 추가
 
     def update(self):
         self.pos += self.dir * self.speed
@@ -336,12 +511,12 @@ class GreenBullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.pos = pygame.Vector2(pos)
         self.dir = dir
-        self.speed = 10
+        self.speed = 15
         self.owner = owner
         self.walls = walls
         self.max_dist = 500
         self.travel = 0
-        self.damage = 10  # 대미지 속성 추가
+        self.damage = 8 # 대미지 속성 추가
 
     def update(self):
         move = self.dir * self.speed
@@ -363,12 +538,12 @@ class LimeBullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.pos = pygame.Vector2(pos)
         self.dir = dir
-        self.speed = 14
+        self.speed = 18
         self.owner = owner
         self.walls = walls
         self.max_dist = 1000
         self.travel = 0
-        self.damage = 45  # 대미지 속성 추가
+        self.damage = 49  # 대미지 속성 추가
 
     def update(self):
         move = self.dir * self.speed
@@ -390,7 +565,7 @@ class GrayOrb(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=pos)
         self.pos = pygame.Vector2(pos)
         self.dir = dir
-        self.speed = 3
+        self.speed = 5
         self.walls = walls
         self.player = player
         self.travel = 0
@@ -654,7 +829,7 @@ def make_enemies(walls, stage, player=None):
         (3, 0, 0, 0, 0, 0, 0),   # 3
         (5, 0, 0, 0, 0, 0, 0),   # 4
         (0, 1, 0, 0, 0, 0, 0),   # 5
-        (1, 1, 0, 0, 0, 0, 0),   # 6
+        (2, 1, 0, 0, 0, 0, 0),   # 6
         (3, 1, 0, 0, 0, 0, 0),   # 7
         (0, 2, 0, 0, 0, 0, 0),   # 8
         (2, 2, 0, 0, 0, 0, 0),   # 9
@@ -662,9 +837,9 @@ def make_enemies(walls, stage, player=None):
         (0, 3, 0, 0, 0, 0, 0),   # 11
         (2, 0, 1, 0, 0, 0, 0),   # 12
         (0, 0, 2, 0, 0, 0, 0),   # 13
-        (0, 2, 1, 0, 0, 0, 0),   # 14
+        (0, 2, 2, 0, 0, 0, 0),   # 14
         (0, 0, 0, 1, 0, 0, 0),   # 15
-        (3, 0, 2, 0, 0, 0, 0),   # 16
+        (3, 0, 3, 0, 0, 0, 0),   # 16
         (0, 2, 0, 1, 0, 0, 0),   # 17
         (0, 5, 0, 0, 0, 0, 0),   # 18
         (1, 1, 1, 1, 0, 0, 0),   # 19
@@ -672,34 +847,34 @@ def make_enemies(walls, stage, player=None):
         (0, 0, 0, 2, 0, 0, 0),   # 21
         (2, 0, 0, 0, 1, 0, 0),   # 22
         (0, 2, 0, 0, 1, 0, 0),   # 23
-        (2, 0, 0, 2, 0, 0, 0),   # 24
+        (2, 0, 0, 3, 0, 0, 0),   # 24
         (0, 0, 0, 0, 3, 0, 0),   # 25
         (1, 1, 1, 1, 1, 0, 0),   # 26
         (0, 2, 0, 3, 0, 0, 0),   # 27
         (0, 0, 5, 0, 0, 0, 0),   # 28
         (0, 0, 0, 5, 0, 0, 0),   # 29
-        (16, 0, 0, 0, 0, 0, 0),   # 30
+        (10, 0, 0, 0, 0, 0, 0),   # 30
         (0, 0, 0, 0, 5, 0, 0),   # 31
         (3, 2, 0, 0, 2, 0, 0),  # 32
-        (0, 0, 1, 2, 2, 0, 0),   # 33
-        (0, 1, 4, 0, 1, 0, 0),   # 34
+        (2, 2, 2, 2, 0, 0, 0),   # 33
+        (0, 0, 4, 0, 4, 0, 0),   # 34
         (0, 0, 0, 0, 0, 1, 0),   # 35
-        (3, 1, 0, 0, 0, 2, 0),   # 36
-        (0, 4, 0, 0, 0, 2, 0),  # 37
-        (0, 0, 5, 0, 0, 1, 0),   # 38
-        (0, 0, 0, 0, 8, 0, 0),   # 39
+        (5, 2, 0, 0, 0, 2, 0),   # 36
+        (0, 5, 0, 0, 0, 2, 0),  # 37
+        (0, 0, 5, 0, 0, 2, 0),   # 38
+        (0, 0, 0, 0, 6, 2, 0),   # 39
         (0, 0, 0, 0, 0, 0, 1),   # 40
         # 41~50: 연보라 적 1마리씩
-        (0, 0, 0, 0, 0, 20, 0),   # 41
-        (20, 0, 0, 0, 0, 0, 1),   # 42
-        (0, 20, 0, 0, 0, 0, 1),   # 43
-        (10, 10, 10, 0, 0, 1, 0),   # 44
-        (0, 0, 20, 0, 0, 0, 2),   # 45
-        (5, 0, 0, 20, 0, 3, 0),   # 46
-        (0, 0, 10, 0, 20, 4, 4),   # 47
-        (30, 15, 5, 0, 0, 0, 0),   # 48
-        (0, 0, 0, 0, 0, 0, 30),   # 49
-        (10, 10, 10, 10, 10, 10, 10),   # 50
+        (0, 0, 0, 5, 0, 2, 0),   # 41
+        (15, 0, 0, 0, 0, 0, 2),   # 42
+        (0, 15, 0, 0, 0, 0, 2),   # 43
+        (5, 5, 5, 0, 0, 2, 0),   # 44
+        (0, 0, 0, 5, 5, 2, 2),   # 45
+        (0, 10, 0, 0, 0, 3, 0),   # 46
+        (0, 0, 10, 0, 0, 4, 4),   # 47
+        (0, 0, 0, 15, 0, 2, 0),   # 48
+        (0, 0, 0, 0, 0, 5, 10),   # 49
+        (3, 2, 5, 5, 3, 3, 5),   # 50
     ]
     if stage < len(stage_table):
         red_count, purple_count, pink_count, green_count, lime_count, lavender_count, brown_count = stage_table[stage]
@@ -2102,28 +2277,60 @@ def draw_gun_info(player):
         ammo = player.ammo1
         mag = player.mag1
     elif player.gun_type == 2:
-        name = "M24"
+        name = "UMP45"
         ammo = player.ammo2
         mag = player.mag2
     elif player.gun_type == 3:
-        name = "Remington 870"
+        name = "P90"
         ammo = player.ammo3
         mag = player.mag3
     elif player.gun_type == 4:
-        name = "M4A1"
+        name = "AWP"
         ammo = player.ammo4
         mag = player.mag4
     elif player.gun_type == 5:
-        name = "MG42"
+        name = "Scout (SSG-08)"
         ammo = player.ammo5
         mag = player.mag5
+    elif player.gun_type == 6:
+        name = "AK-47"
+        ammo = player.ammo6
+        mag = player.mag6
     elif player.gun_type == 7:
-        name = "Mk14"
+        name = "G36"
         ammo = player.ammo7
         mag = player.mag7
-    elif player.gun_type == 6:
+    elif player.gun_type == 8:
+        name = "FAMAR"
+        ammo = player.ammo8
+        mag = player.mag8
+    elif player.gun_type == 9:
+        name = "Mk14 EBR"
+        ammo = player.ammo9
+        mag = player.mag9
+    elif player.gun_type == 10:
+        name = "QBU-88"
+        ammo = player.ammo10
+        mag = player.mag10
+    elif player.gun_type == 11:
+        name = "M249"
+        ammo = player.ammo11
+        mag = player.mag11
+    elif player.gun_type == 12:
+        name = "MG42"
+        ammo = player.ammo12
+        mag = player.mag12
+    elif player.gun_type == 13:
+        name = "Remington 870"
+        ammo = player.ammo13
+        mag = player.mag13
+    elif player.gun_type == 14:
+        name = "Saiga-12"
+        ammo = player.ammo14
+        mag = player.mag14
+    elif player.gun_type == 15:
         name = "Webley Mk VI"
-        ammo = player.ammo6
+        ammo = player.ammo15
         mag = "∞"
     else:
         name = "Unknown"
@@ -2160,82 +2367,178 @@ def main():
     gun_select = [0, 1, 2]
 
     # --- gun_names, gun_types, gun_desc에 DMR 추가 ---
-    gun_names = ["MP5", "M24", "Remington 870", "M4A1", "MG42", "QBU-88"]
-    gun_types = [1, 2, 3, 4, 5, 7]  # 7: DMR
+    gun_names = ["MP5", "UMP45", "P90", "AWP", "Scout (SSG-08)", "AK-47", "G36", "FAMAR", "Mk14 EBR", "QBU-88", "M249", "MG42", "Remington 870", "Saiga-12"]
+    gun_types = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]  # 7: DMR
 
     gun_desc = [
         {
             "이름": "MP5 (SMG)",
             "탄약": "30",
-            "탄창": "4",
-            "대미지": "26",
-            "연사속도": "9.0",
-            "총알속도": "12",
-            "장전속도": "1.8 sec",
-            "무게": "3.0",
-            "반동": "2",
-            "거리": "400"
+            "탄창": "3",
+            "대미지": "22",
+            "연사속도": "800",
+            "총알속도": "850",
+            "장전속도": "1.8s",
+            "무게": "-5%",
+            "반동": "medium",
+            "거리": "short"
         },
         {
-            "이름": "M24 (Sniper Riffle)",
+            "이름": "UMP45 (SMG)",
+            "탄약": "25",
+            "탄창": "3",
+            "대미지": "26",
+            "연사속도": "650",
+            "총알속도": "780",
+            "장전속도": "1.9s",
+            "무게": "-6%",
+            "반동": "medium",
+            "거리": "short"
+        },
+        {
+            "이름": "P90 (SMG)",
+            "탄약": "50",
+            "탄창": "2",
+            "대미지": "20",
+            "연사속도": "900",
+            "총알속도": "900",
+            "장전속도": "2.1s",
+            "무게": "-7%",
+            "반동": "medium",
+            "거리": "short"
+        },
+        {
+            "이름": "AWP (Sniper Riffle)",
             "탄약": "5",
             "탄창": "1",
-            "대미지": "200",
-            "연사속도": "0.7",
-            "총알속도": "30",
-            "장전속도": "2.4 sec",
-            "무게": "7.5",
-            "반동": "0",
+            "대미지": "250",
+            "연사속도": "40",
+            "총알속도": "1400",
+            "장전속도": "3.6s",
+            "무게": "-20%",
+            "반동": "small",
             "거리": "1200"
+        },
+        {
+            "이름": "Scout (SSG-08) (Sniper Riffle)",
+            "탄약": "10",
+            "탄창": "2",
+            "대미지": "205",
+            "연사속도": "70",
+            "총알속도": "1350",
+            "장전속도": "2.8 sec",
+            "무게": "-10%",
+            "반동": "small",
+            "거리": "1050"
+        },
+        {
+            "이름": "AK-47 (AR)",
+            "탄약": "30",
+            "탄창": "3",
+            "대미지": "36",
+            "연사속도": "650",
+            "총알속도": "950",
+            "장전속도": "2.4s",
+            "무게": "-12%",
+            "반동": "medium",
+            "거리": "650"
+        },
+        {
+            "이름": "G36 (AR)",
+            "탄약": "30",
+            "탄창": "3",
+            "대미지": "30",
+            "연사속도": "720",
+            "총알속도": "1000",
+            "장전속도": "2.1s",
+            "무게": "-9%",
+            "반동": "medium",
+            "거리": "650"
+        },
+        {
+            "이름": "FAMAS (AR)",
+            "탄약": "25",
+            "탄창": "3",
+            "대미지": "28",
+            "연사속도": "900",
+            "총알속도": "1020",
+            "장전속도": "2.3s",
+            "무게": "-11%",
+            "반동": "medium",
+            "거리": "650"
+        },
+        {
+            "이름": "Mk14 EBR (DMR)",
+            "탄약": "20",
+            "탄창": "2",
+            "대미지": "70",
+            "연사속도": "350",
+            "총알속도": "1250",
+            "장전속도": "2.9s",
+            "무게": "-14%",
+            "반동": "medium",
+            "거리": "1000"
+        },
+        {
+            "이름": "QBU-88 (DMR)",
+            "탄약": "15",
+            "탄창": "3",
+            "대미지": "60",
+            "연사속도": "320",
+            "총알속도": "11800",
+            "장전속도": "2.6s",
+            "무게": "-11%",
+            "반동": "medium",
+            "거리": "1000"
+        },
+        {
+            "이름": "M249 (LMG)",
+            "탄약": "100",
+            "탄창": "1",
+            "대미지": "30",
+            "연사속도": "800",
+            "총알속도": "900",
+            "장전속도": "5.5s",
+            "무게": "-30%",
+            "반동": "lot",
+            "거리": "700"
+        },
+        {
+            "이름": "MG42 (LMG)",
+            "탄약": "100",
+            "탄창": "1",
+            "대미지": "28",
+            "연사속도": "1100",
+            "총알속도": "920",
+            "장전속도": "5.8s",
+            "무게": "-33%",
+            "반동": "lot",
+            "거리": "700"
         },
         {
             "이름": "Remington 870 (Shotgun)",
             "탄약": "6",
             "탄창": "2",
-            "대미지": "74 x 6",
-            "연사속도": "1.2",
-            "총알속도": "8",
-            "장전속도": "2.5 sec",
-            "무게": "6.5",
-            "반동": "3",
+            "대미지": "45 x 8",
+            "연사속도": "70",
+            "총알속도": "600",
+            "장전속도": "3.2 sec",
+            "무게": "-10%",
+            "반동": "lot",
             "거리": "180"
         },
         {
-            "이름": "M4A1 (AR)",
-            "탄약": "30",
-            "탄창": "3",
-            "대미지": "34",
-            "연사속도": "4.5",
-            "총알속도": "14",
-            "장전속도": "2.4 sec",
-            "무게": "4.0",
-            "반동": "0.3",
-            "거리": "600"
-        },
-        {
-            "이름": "MG42 (LMG)",
-            "탄약": "125",
-            "탄창": "1",
-            "대미지": "14",
-            "연사속도": "12.0",
-            "총알속도": "12",
-            "장전속도": "6.0 sec",
-            "무게": "8.0",
-            "반동": "4",
-            "거리": "650"
-        },
-        {
-            "이름": "Mk14 (DMR)",
-            "탄약": "20",
+            "이름": "Saiga-12 (Shotgun)",
+            "탄약": "8",
             "탄창": "2",
-            "대미지": "62",
-            "연사속도": "3.0",
-            "총알속도": "22",
-            "장전속도": "2.7 sec",
-            "무게": "3.0",
-            "반동": "0.1",
-            "거리": "900"
-        },
+            "대미지": "40 x 6",
+            "연사속도": "180",
+            "총알속도": "650",
+            "장전속도": "3.0 sec",
+            "무게": "-12%",
+            "반동": "lot",
+            "거리": "180"
+        }
     ]
 
     while True:
@@ -2291,11 +2594,11 @@ def main():
                     elif event.key == pygame.K_3:
                         player.gun_type = gun_types[gun_select[2]]
                     if event.key == pygame.K_4:
-                        player.gun_type = 6  # 기본 권총(리볼버)
+                        player.gun_type = 15  # 기본 권총(리볼버)
 
         # 메뉴/스테이지 선택 화면 그리기
         if game_state == "menu":
-            draw_text(screen, "Kevin Steve JML", (WIDTH//2-120, HEIGHT//2-120))
+            draw_text(screen, "Top-Down_Shooting v.11", (WIDTH//2-120, HEIGHT//2-120))
             draw_text(screen, "STAGE SELECT: ENTER", (WIDTH//2-100, HEIGHT//2-40))
             draw_text(screen, "CHANGE SLOT: 1/2/3, CHANGE WEAPON: ←/→", (WIDTH//2-200, HEIGHT//2-10))
             for i in range(3):
@@ -2317,11 +2620,11 @@ def main():
             draw_text(screen, f"AMMO: {desc['탄약']} | MAG: {desc['탄창']}", (20, y0+60))
             draw_text(screen, f"DMG: {desc['대미지']}", (20, y0+90))
             draw_text(screen, f"RANGE: {desc['거리']}", (20, y0+120))
-            draw_text(screen, f"RPS: {desc['연사속도']}", (20, y0+150))
+            draw_text(screen, f"RPM: {desc['연사속도']}", (20, y0+150))
             draw_text(screen, f"BULLET SPEED: {desc['총알속도']}", (20, y0+180))
-            draw_text(screen, f"RELOAD SPEED: {desc['장전속도']}", (20, y0+210))
+            draw_text(screen, f"RELOAD TIME: {desc['장전속도']}", (20, y0+210))
             draw_text(screen, f"RECOIL: {desc['반동']}", (20, y0+240))
-            draw_text(screen, f"WEIGHT: {desc['무게']}", (20, y0+270))
+            draw_text(screen, f"MOVE SPEED: {desc['무게']}", (20, y0+270))
         elif game_state == "stage_select":
             draw_text(screen, f"STAGE SELECT (←→, ↑↓, ENTER, ESC:menu)", (WIDTH//2-180, HEIGHT//2-120))
             draw_text(screen, f"PAGE {page+1}/5", (WIDTH//2-40, HEIGHT//2-80))  # 5페이지로 변경
@@ -2421,7 +2724,7 @@ def main():
                 draw_gun_info(player)  # 중앙 하단 총 정보 표시
 
                 # --- 조준선 표시 (SR, DMR) ---
-                if player.gun_type in [2, 7]:
+                if player.gun_type in [4, 5, 8, 9]:
                     mx, my = pygame.mouse.get_pos()
                     px, py = int(player.pos.x), int(player.pos.y)
                     dir = pygame.Vector2(mx - px, my - py)
