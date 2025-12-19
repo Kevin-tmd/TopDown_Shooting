@@ -66,15 +66,15 @@ class Player(pygame.sprite.Sprite):
         self.max_ammo13 = 6
         self.max_ammo14 = 8
         self.max_ammo15 = 6
-        self.mag1 = 3
-        self.mag2 = 3
-        self.mag3 = 2 
+        self.mag1 = 4
+        self.mag2 = 4
+        self.mag3 = 3 
         self.mag4 = 2 
         self.mag5 = 2 
-        self.mag6 = 3
-        self.mag7 = 3 
-        self.mag8 = 3
-        self.mag9 = 2
+        self.mag6 = 4
+        self.mag7 = 4 
+        self.mag8 = 4
+        self.mag9 = 3
         self.mag10 = 3
         self.mag11 = 1
         self.mag12 = 1
@@ -284,6 +284,7 @@ class Player(pygame.sprite.Sprite):
                 angle += random.uniform(-spread, spread)
                 dir = pygame.Vector2(math.cos(angle), math.sin(angle))
                 bullets.add(PlayerBullet(self.pos, dir, walls, "player", 20, 90, 450))
+                self.ammo3 -= 1
                 self.shoot_cool = 4
         elif self.gun_type == 4: 
             if self.ammo4 > 0 and self.shoot_cool == 0:
@@ -745,25 +746,25 @@ def make_walls():
 
     randomvariable=random.randint(0, 100)
     if randomvariable < 20:
-        num_walls_rect = random.randint(4, 4)
+        num_walls_rect = random.randint(4, 8)
         num_L = random.randint(0, 0)
         num_U = random.randint(0, 0)
     elif randomvariable < 40:
-        num_walls_rect = random.randint(1, 2)
-        num_L = random.randint(8, 12)
+        num_walls_rect = random.randint(2, 4)
+        num_L = random.randint(12, 18)
         num_U = random.randint(0, 0)
     elif randomvariable < 60:
-        num_walls_rect = random.randint(0, 8)
-        num_L = random.randint(1, 2)
-        num_U = random.randint(4, 6)
+        num_walls_rect = random.randint(0, 10)
+        num_L = random.randint(2, 4)
+        num_U = random.randint(4, 8)
     elif randomvariable < 80:
-        num_walls_rect = random.randint(1, 2)
-        num_L = random.randint(1, 3)
-        num_U = random.randint(8, 12)
+        num_walls_rect = random.randint(0, 3)
+        num_L = random.randint(2, 6)
+        num_U = random.randint(8, 16)
     else:
-        num_walls_rect = random.randint(0, 2)
-        num_L = random.randint(4, 8)
-        num_U = random.randint(3, 6)
+        num_walls_rect = random.randint(0, 4)
+        num_L = random.randint(6, 16)
+        num_U = random.randint(6, 16)
 
     # 랜덤 직사각형 벽
     for _ in range(num_walls_rect):
@@ -2341,8 +2342,8 @@ def draw_gun_info(player):
 
 # --- 게임 루프 ---
 def main():
-    # --- For debuging purpose, change this to 'True' to unlock all stages ---
-    DEBUG_UNLOCK_ALL_STAGE = False # 'False' for normal game purpose
+    # --- 디버깅용: 모든 스테이지 해금 ---
+    DEBUG_UNLOCK_ALL_STAGE = True  # False로 바꾸면 원래대로
 
     if DEBUG_UNLOCK_ALL_STAGE:
         stage_unlocked = [True] * 50  # 50스테이지까지 해금
@@ -2374,7 +2375,7 @@ def main():
         {
             "이름": "MP5 (SMG)",
             "탄약": "30",
-            "탄창": "3",
+            "탄창": "4",
             "대미지": "22",
             "연사속도": "800",
             "총알속도": "850",
@@ -2386,7 +2387,7 @@ def main():
         {
             "이름": "UMP45 (SMG)",
             "탄약": "25",
-            "탄창": "3",
+            "탄창": "4",
             "대미지": "26",
             "연사속도": "650",
             "총알속도": "780",
@@ -2398,7 +2399,7 @@ def main():
         {
             "이름": "P90 (SMG)",
             "탄약": "50",
-            "탄창": "2",
+            "탄창": "3",
             "대미지": "20",
             "연사속도": "900",
             "총알속도": "900",
@@ -2410,7 +2411,7 @@ def main():
         {
             "이름": "AWP (Sniper Riffle)",
             "탄약": "5",
-            "탄창": "1",
+            "탄창": "2",
             "대미지": "250",
             "연사속도": "40",
             "총알속도": "1400",
@@ -2434,7 +2435,7 @@ def main():
         {
             "이름": "AK-47 (AR)",
             "탄약": "30",
-            "탄창": "3",
+            "탄창": "4",
             "대미지": "36",
             "연사속도": "650",
             "총알속도": "950",
@@ -2446,7 +2447,7 @@ def main():
         {
             "이름": "G36 (AR)",
             "탄약": "30",
-            "탄창": "3",
+            "탄창": "4",
             "대미지": "30",
             "연사속도": "720",
             "총알속도": "1000",
@@ -2458,7 +2459,7 @@ def main():
         {
             "이름": "FAMAS (AR)",
             "탄약": "25",
-            "탄창": "3",
+            "탄창": "4",
             "대미지": "28",
             "연사속도": "900",
             "총알속도": "1020",
@@ -2470,7 +2471,7 @@ def main():
         {
             "이름": "Mk14 EBR (DMR)",
             "탄약": "20",
-            "탄창": "2",
+            "탄창": "3",
             "대미지": "70",
             "연사속도": "350",
             "총알속도": "1250",
