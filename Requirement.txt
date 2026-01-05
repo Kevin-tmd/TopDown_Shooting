@@ -1,16 +1,1 @@
-This program requires Python 3.9+ and the Pygame library.
-It runs as 2D top-down shooter game with keyboard and mouse input.
-
-System must support:
-–Real-time rendering at ~60FPS
-–Keyboard input (wasd, r, number keys, direction keys)
-–Mouse input for aiming and shooting
-–Basic CPU-based pathfinding
-
-Enemy AI
-–Line-of-sight checking using ray-rectangle intersection
-–A* algorithm to find path
-–random heuristics for non-optimal paths
-(intentional behaviour)
-
-
+pygame>=2.0.0
